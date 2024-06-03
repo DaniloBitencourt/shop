@@ -12,15 +12,18 @@ class ProductsOverviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Minha Loja'),
+        title: Text(
+          'Minha Loja',
+          style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
+        ),
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(10),
         itemCount: loadedProducts.length,
-        itemBuilder: (ctx, i) =>ProductItem(product: loadedProducts[i]),
+        itemBuilder: (ctx, i) => ProductItem(product: loadedProducts[i]),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 3/2,
+          childAspectRatio: 3 / 2,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
         ),

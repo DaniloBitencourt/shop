@@ -20,5 +20,8 @@ ThemeData buildTheme() {
         color: Colors.black,
       ),
     ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.purple,
+    ),
   );
 }
