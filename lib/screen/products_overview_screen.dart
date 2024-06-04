@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/components/pin.dart';
+import 'package:shop/models/cart.dart';
 
 import '../components/product_grid.dart';
 
-enum FilterOptions{
+enum FilterOptions {
   Favorite,
   All,
 }
@@ -15,9 +18,8 @@ class ProductsOverviewScreen extends StatefulWidget {
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
-  
   bool _showFavoriteOnly = false;
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +32,9 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ),
         actions: [
           PopupMenuButton(
-            icon: Icon(Icons.more_vert,color: Colors.white,),
+            icon: Icon(
+              Icons.more_vert,
+            ),
             itemBuilder: (_) => [
               PopupMenuItem(
                 child: Text('Somente Favoritos'),
@@ -41,15 +45,27 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                 value: FilterOptions.All,
               ),
             ],
-            onSelected: (FilterOptions selectedValue){
+            onSelected: (FilterOptions selectedValue) {
               setState(() {
-                if(selectedValue == FilterOptions.Favorite){
+                if (selectedValue == FilterOptions.Favorite) {
                   _showFavoriteOnly = true;
-                }else{
+                } else {
                   _showFavoriteOnly = false;
                 }
               });
             },
+          ),
+          Consumer<Cart>(
+            child: IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.shopping_cart,
+                ),
+            ),
+            builder: (ctx, cart, child) => Pin(
+              value: cart.itemsCount.toString(),
+              child: child!,
+            ),
           )
         ],
       ),

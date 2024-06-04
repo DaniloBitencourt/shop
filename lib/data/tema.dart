@@ -23,5 +23,8 @@ ThemeData buildTheme() {
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.purple,
     ),
+    iconButtonTheme: IconButtonThemeData(
+      style: ButtonStyle(iconColor: MaterialStateProperty.all(Colors.white))
+    ),
   );
 }
