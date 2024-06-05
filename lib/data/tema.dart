@@ -20,8 +20,13 @@ ThemeData buildTheme() {
         color: Colors.black,
       ),
     ),
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: Colors.purple,
+      titleTextStyle: const TextStyle(
+        color: Colors.white,
+        fontFamily: 'Lato',
+        fontSize: 20,
+      ),
     ),
     iconButtonTheme: IconButtonThemeData(
       style: ButtonStyle(iconColor: MaterialStateProperty.all(Colors.white))

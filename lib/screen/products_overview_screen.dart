@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop/components/pin.dart';
 import 'package:shop/models/cart.dart';
+import 'package:shop/utils/app_routes.dart';
 
 import '../components/product_grid.dart';
 
@@ -24,25 +25,20 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Minha Loja',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-        ),
+        title: const Text('Minha Loja'),
         actions: [
           PopupMenuButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.more_vert,
             ),
             itemBuilder: (_) => [
-              PopupMenuItem(
-                child: Text('Somente Favoritos'),
+              const PopupMenuItem(
                 value: FilterOptions.Favorite,
+                child: Text('Somente Favoritos'),
               ),
-              PopupMenuItem(
-                child: Text('Todos'),
+              const PopupMenuItem(
                 value: FilterOptions.All,
+                child: Text('Todos'),
               ),
             ],
             onSelected: (FilterOptions selectedValue) {
@@ -57,10 +53,12 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           ),
           Consumer<Cart>(
             child: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.shopping_cart,
-                ),
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.CART);
+              },
+              icon: const Icon(
+                Icons.shopping_cart,
+              ),
             ),
             builder: (ctx, cart, child) => Pin(
               value: cart.itemsCount.toString(),
