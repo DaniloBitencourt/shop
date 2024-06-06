@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shop/models/product.dart';
+import 'package:provider/provider.dart';
+import 'package:shop/models/product_list.dart';
 
 class ProductFormScreen extends StatefulWidget {
   const ProductFormScreen({super.key});
@@ -39,31 +38,29 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     setState(() {});
   }
 
-  bool isValidImageUrl(String url){
+  bool isValidImageUrl(String url) {
     bool isValidUrl = Uri.tryParse(url)?.hasAbsolutePath ?? false;
-    bool endsWithFile = url.toLowerCase().endsWith('.png') || url.toLowerCase().endsWith('.jpg') || url.toLowerCase().endsWith('.jpeg');
+    bool endsWithFile = url.toLowerCase().endsWith('.png') ||
+        url.toLowerCase().endsWith('.jpg') ||
+        url.toLowerCase().endsWith('.jpeg');
     return isValidUrl && endsWithFile;
   }
 
   void _submitForm() {
     final isValid = _formKey.currentState?.validate() ?? false;
 
-    if(!isValid){
+    if (!isValid) {
       return;
     }
 
     _formKey.currentState?.save();
-    final newProduct = Product(
-      id: Random().nextDouble().toString(),
-      name: _formData['name'] as String,
-      description: _formData['description'] as String,
-      price: _formData['price'] as double,
-      imageUrl: _formData['imageUrl'] as String,
-    );
-    print(newProduct.id);
-    print(newProduct.name);
-    print(newProduct.price);
-    print(newProduct.description);
+    
+
+    Provider.of<ProductList>(
+      context,
+      listen: false,
+    ).addProductFromData(_formData);
+    Navigator.of(context).pop();
   }
 
   @override
@@ -74,7 +71,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
         actions: [
           IconButton(
             onPressed: _submitForm,
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
           )
         ],
       ),
@@ -92,12 +89,12 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 },
                 maxLength: 50,
                 onSaved: (name) => _formData['name'] = name ?? '',
-                validator: (_name){
+                validator: (_name) {
                   final name = _name ?? '';
-                  if(name.trim().isEmpty){
+                  if (name.trim().isEmpty) {
                     return 'Nome é obrigatório';
                   }
-                  if(name.trim().length < 3){
+                  if (name.trim().length < 3) {
                     return 'Nome precisa de no mínimo 3 letras';
                   }
 
@@ -116,11 +113,11 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 },
                 onSaved: (price) =>
                     _formData['price'] = double.parse(price ?? '0'),
-                validator: (_price){
+                validator: (_price) {
                   final priceString = _price ?? '';
                   final double price = double.tryParse(priceString) ?? -1;
-                  
-                  if (price <= 0){
+
+                  if (price <= 0) {
                     return 'Preço inválido';
                   }
                   return null;
@@ -137,12 +134,12 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                 },
                 onSaved: (description) =>
                     _formData['description'] = description ?? '',
-                validator: (_description){
+                validator: (_description) {
                   final description = _description ?? '';
-                  if(description.trim().isEmpty){
+                  if (description.trim().isEmpty) {
                     return 'Descrição é obrigatória';
                   }
-                  if(description.trim().length < 10){
+                  if (description.trim().length < 10) {
                     return 'Descrição precisa de no mínimo 10 letras';
                   }
 
@@ -165,7 +162,7 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
                           _formData['imageUrl'] = imageUrl ?? '',
                       validator: (_imageUrl) {
                         final imageUrl = _imageUrl ?? '';
-                        if(!isValidImageUrl(imageUrl)){
+                        if (!isValidImageUrl(imageUrl)) {
                           return 'Url Inválida';
                         }
                         return null;
