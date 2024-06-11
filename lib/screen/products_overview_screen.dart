@@ -35,6 +35,13 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       });
     });
   }
+  
+  Future<void> _refreshProducts(BuildContext context) {
+    return Provider.of<ProductList>(
+      context,
+      listen: false,
+    ).loadProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +93,9 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       ? Center(
         child: CircularProgressIndicator(),
       )
-      : ProductGrid(_showFavoriteOnly),
+      : RefreshIndicator(
+        onRefresh: ()=>_refreshProducts(context),
+        child: ProductGrid(_showFavoriteOnly)),
       drawer: AppDrawer(),
     );
   }
