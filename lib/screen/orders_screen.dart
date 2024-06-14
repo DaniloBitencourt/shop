@@ -26,6 +26,13 @@ class _OrdersScreenState extends State<OrdersScreen> {
     });
   }
 
+  Future<void> _refreshOrders(BuildContext context) {
+    return Provider.of<OrderList>(
+      context,
+      listen: false,
+    ).loadOrders();
+  }
+
   @override
   Widget build(BuildContext context) {
     final OrderList orders = Provider.of(context);
@@ -36,9 +43,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
       drawer: AppDrawer(),
       body: _isLoading
       ? Center(child: CircularProgressIndicator(),) 
-      : ListView.builder(
-        itemCount: orders.itemsCount,
-        itemBuilder: (ctx, i) => OrderWidget(order: orders.items[i])
+      : RefreshIndicator(
+        onRefresh: ()=>_refreshOrders(context),
+        child: ListView.builder(
+          itemCount: orders.itemsCount,
+          itemBuilder: (ctx, i) => OrderWidget(order: orders.items[i])
+        ),
       ),
     );
   }
