@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop/models/cart.dart';
 import 'package:shop/models/order_list.dart';
 import 'package:shop/models/product_list.dart';
+import 'package:shop/screen/auth_screen.dart';
 import 'package:shop/screen/cart_screen.dart';
 import 'package:shop/screen/orders_screen.dart';
 import 'package:shop/screen/product_detail_screen.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         title: 'Shop',
         theme: buildTheme(),
         routes: {
+          AppRoutes.AUTH:(ctx) => AuthScreen(),
           AppRoutes.HOME:(ctx) => ProductsOverviewScreen(),
           AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen(),
           AppRoutes.CART: (ctx) => CartScreen(),
