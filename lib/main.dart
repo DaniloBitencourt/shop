@@ -4,7 +4,7 @@ import 'package:shop/models/auth.dart';
 import 'package:shop/models/cart.dart';
 import 'package:shop/models/order_list.dart';
 import 'package:shop/models/product_list.dart';
-import 'package:shop/screen/auth_screen.dart';
+import 'package:shop/screen/auth_or_home.dart';
 import 'package:shop/screen/cart_screen.dart';
 import 'package:shop/screen/orders_screen.dart';
 import 'package:shop/screen/product_detail_screen.dart';
@@ -14,8 +14,6 @@ import 'package:shop/screen/products_screen.dart';
 import './utils/app_routes.dart';
 
 import './data/tema.dart';
-
-import '../screen/products_overview_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,24 +27,36 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => ProductList(),
+          create: (_) => Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth, ProductList>(
+          create: (_) => ProductList('', []),
+          update: ((ctx, auth, previous) {
+            return ProductList(
+              auth.token ?? '',
+              previous?.items ?? [],
+            );
+          }),
+        ),
+        ChangeNotifierProxyProvider<Auth, OrderList>(
+          create: (_) => OrderList('', []),
+          update: (context, auth, previous) {
+            return OrderList(
+              auth.token ?? '',
+              previous?.items ?? [],
+            );
+          },
         ),
         ChangeNotifierProvider(
           create: (_) => Cart(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => OrderList(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => Auth(),
-        ),
+        
       ],
       child: MaterialApp(
         title: 'Shop',
         theme: buildTheme(),
         routes: {
-          AppRoutes.AUTH:(ctx) => AuthScreen(),
-          AppRoutes.HOME:(ctx) => ProductsOverviewScreen(),
+          AppRoutes.AUTH_OR_HOME: (ctx) => AuthOrHomeScreen(),
           AppRoutes.PRODUCT_DETAIL: (ctx) => ProductDetailScreen(),
           AppRoutes.CART: (ctx) => CartScreen(),
           AppRoutes.ORDERS: (ctx) => OrdersScreen(),
