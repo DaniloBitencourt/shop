@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop/utils/custom_route.dart';
 
 ThemeData buildTheme() {
   final ThemeData tema = ThemeData();
@@ -30,6 +31,12 @@ ThemeData buildTheme() {
     ),
     iconButtonTheme: IconButtonThemeData(
       style: ButtonStyle(iconColor: MaterialStateProperty.all(Colors.white))
+    ),
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android : CustomPageTransitionsBuilder(),
+        TargetPlatform.iOS : CustomPageTransitionsBuilder(),
+      },
     ),
   );
 }
